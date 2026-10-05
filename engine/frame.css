@@ -1,0 +1,33 @@
+/* The base every frame renders on: a small reset in the spirit of Tailwind's
+   preflight (border-box sizing, line-height 1.5, block images), so layout is
+   predictable. Scoped to the frame so the studio's own UI is untouched. */
+.keyframe-root {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: auto;
+}
+.keyframe-root *,
+.keyframe-root ::before,
+.keyframe-root ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+.keyframe-root :where(h1, h2, h3, h4, h5, h6) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+.keyframe-root :where(img, svg, video, canvas, audio, iframe, embed, object) {
+  display: block;
+  vertical-align: middle;
+}
+.keyframe-root :where(img, video) {
+  max-width: 100%;
+  height: auto;
+}
+.keyframe-root :where(ol, ul, menu) {
+  list-style: none;
+}
