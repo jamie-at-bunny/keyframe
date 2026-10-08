@@ -9,11 +9,11 @@ dependency; the engine is ours. Never use an em dash in copy, comments or docs. 
 
 - `npm run lint` (tsc and Biome) passes before anything is called done; `npm run format` fixes
   formatting and import order. Suppress a Biome rule only with a `biome-ignore` comment that says why.
-- Never invent a value that already exists. Colours come from `kit/palette.ts`, corners from
+- Never invent a value that already exists. Colours come from `packages/kit/src/palette.ts`, corners from
   `RADIUS`, product names from `PRODUCTS`, beats from the video's `T`. A string literal naming one of
   these is a missing import.
 - Derive types from their source: `LogoVariant`, `VideoMeta & {...}`, `keyof typeof MAP`.
-- Reach for a config map over a chain of ternaries or `if/else` (see `PLACEMENT` in `kit/Bumper.tsx`).
+- Reach for a config map over a chain of ternaries or `if/else` (see `PLACEMENT` in `packages/components/src/Bumper.tsx`).
 - Helpers take values and return values; the component owns the state.
 - Third copy means extract: a third copy of a style or block becomes a kit helper (`rise()`,
   `TitleBar`).

@@ -1,0 +1,26 @@
+{
+  "name": "@keyframe/engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Keyframe runtime: frame clock, springs and easing, assets, Web Audio, studio, render bridge and renderer",
+  "type": "module",
+  "exports": {
+    "./assets": "./src/assets.ts",
+    "./audio": "./src/audio.ts",
+    "./bridge": "./src/bridge.tsx",
+    "./motion": "./src/motion.ts",
+    "./studio": "./src/studio.tsx",
+    "./time": "./src/time.tsx"
+  },
+  "bin": {
+    "keyframe-render": "./render/render.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.63.0",
+    "vite": "8.3.2"
+  },
+  "peerDependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

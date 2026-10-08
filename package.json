@@ -4,23 +4,20 @@
   "private": true,
   "description": "bunny.net marketing videos: React and HTML frames, Web Audio sound, Chromium capture, AVFoundation encode",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "render": "node render/render.mjs",
+    "dev": "npm run dev -w @keyframe/videos",
+    "render": "npm run render -w @keyframe/videos --",
     "lint": "tsc -p . && biome check .",
     "format": "biome check --write ."
-  },
-  "dependencies": {
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.1.2",
-    "playwright": "1.63.0",
-    "typescript": "5.9.3",
-    "vite": "8.3.2"
+    "typescript": "5.9.3"
   }
 }

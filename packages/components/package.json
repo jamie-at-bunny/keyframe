@@ -1,0 +1,19 @@
+{
+  "name": "@keyframe/components",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Keyframe house components: stage, supers, cards, checks, charts, SVG traces, the CLI terminal, code walkthroughs and bumpers",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./code": "./src/code.tsx"
+  },
+  "dependencies": {
+    "@keyframe/engine": "1.0.0",
+    "@keyframe/kit": "1.0.0"
+  },
+  "peerDependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

@@ -1,7 +1,14 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
   "files": {
-    "includes": ["**", "!out", "!.cache", "!public", "!kit/fonts"]
+    "includes": [
+      "**",
+      "!**/out",
+      "!**/.cache",
+      "!apps/*/public",
+      "!packages/kit/src/fonts",
+      "!packages/illustrations/src/svg"
+    ]
   },
   "formatter": {
     "indentStyle": "space",
@@ -22,8 +29,8 @@
   "overrides": [
     {
       // Videos are rendered to pixels; nothing in a frame is read by assistive tech.
-      // The studio (engine/studio.tsx) keeps the accessibility rules.
-      "includes": ["kit/**", "campaigns/**"],
+      // The studio (packages/engine/src/studio.tsx) keeps the accessibility rules.
+      "includes": ["packages/kit/**", "packages/components/**", "packages/illustrations/**", "apps/*/campaigns/**"],
       "linter": { "rules": { "a11y": "off" } }
     }
   ],

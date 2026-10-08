@@ -16,14 +16,14 @@ export const SOUND: Cue[] = [
 ];
 ```
 
-Then pass `sound: SOUND` to `defineVideo`. Worked example: `campaigns/cli/StreamImport/sound.ts`.
+Then pass `sound: SOUND` to `defineVideo`. Worked example: `apps/videos/campaigns/cli/StreamImport/sound.ts`.
 
 ## Cues
 
 `cue(at, sound, volume = 1, { frames?, rate?, pan?, offset? })`
 
 - `at`: start frame. Key it off a beat in `T`, never a literal, so retiming the picture moves the sound.
-- `sound`: a synth from `@keyframe/kit/sfx`, your own `synth()`, or a path in `public/` (`"sfx/whoosh.wav"`, any format Chromium decodes: wav, mp3, m4a, ogg).
+- `sound`: a synth from `@keyframe/kit/sfx`, your own `synth()`, or a path in `apps/videos/public/` (`"sfx/whoosh.wav"`, any format Chromium decodes: wav, mp3, m4a, ogg).
 - `volume`: linear gain. Effects sit around 0.2 to 0.7.
 - `frames`: cut off after this many frames, with a 6ms fade so it never clicks. Use it to keep a long tail from bleeding into the next beat.
 - `rate`: playback rate (also pitch). `pan`: -1 to 1. `offset`: seconds into the sound.
@@ -46,7 +46,7 @@ A music bed or voiceover is one long cue at frame 0 (`cue(0, "music.mp3", 0.15)`
 
 ## Designing a sound
 
-Build it from Web Audio nodes in `kit/sfx.ts` (or the campaign folder if it is one-off), using the primitives there:
+Build it from Web Audio nodes in `packages/kit/src/sfx.ts` (or the campaign folder if it is one-off), using the primitives there:
 
 ```ts
 import { burst, make, tone } from "@keyframe/kit/sfx";
@@ -75,8 +75,8 @@ export const BLIP = make(0.12, (ctx) => {
 Play it in the studio (`npm run dev`, space to play, M to mute). After rendering, check level and timing:
 
 ```console
-ffmpeg -i out/<Id>.mp4 -af volumedetect -vn -f null - 2>&1 | grep -E "mean_volume|max_volume"
-ffmpeg -i out/<Id>.mp4 -af "silencedetect=n=-45dB:d=0.02" -vn -f null - 2>&1 | grep silence_end
+ffmpeg -i apps/videos/out/<Id>.mp4 -af volumedetect -vn -f null - 2>&1 | grep -E "mean_volume|max_volume"
+ffmpeg -i apps/videos/out/<Id>.mp4 -af "silencedetect=n=-45dB:d=0.02" -vn -f null - 2>&1 | grep silence_end
 ```
 
 `silence_end` times are onsets: frame `at` should land at `at / fps` seconds. `max_volume` must stay below 0 dB (clipping).

@@ -1,0 +1,23 @@
+{
+  "name": "@keyframe/videos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The bunny.net videos: the registry, campaigns, brand art and the studio",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "render": "keyframe-render"
+  },
+  "dependencies": {
+    "@keyframe/components": "1.0.0",
+    "@keyframe/engine": "1.0.0",
+    "@keyframe/illustrations": "1.0.0",
+    "@keyframe/kit": "1.0.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.1.2",
+    "vite": "8.3.2"
+  }
+}

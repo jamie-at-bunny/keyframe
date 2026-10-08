@@ -1,0 +1,17 @@
+{
+  "name": "@keyframe/illustrations",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Illustrations for Keyframe videos: device frames with live screens, windows, cards and scenes",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@keyframe/engine": "1.0.0"
+  },
+  "peerDependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

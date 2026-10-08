@@ -1,10 +1,11 @@
-# The kit (`@keyframe/kit`)
+# The kit and components (`@keyframe/kit`, `@keyframe/components`)
 
 Everything here is shared across videos. Read the source for details; this is the map.
-New shared pieces go in `kit/` and get a row here. Pieces shared by one campaign's videos only
-stay in that campaign.
+Tokens, motion helpers, product names and sounds go in `packages/kit/src/` (`@keyframe/kit`); shared
+visual pieces go in `packages/components/src/` (`@keyframe/components`). Either way they get a row
+here. Pieces shared by one campaign's videos only stay in that campaign.
 
-## Tokens (`kit/tokens.ts`)
+## Tokens (`@keyframe/kit`, `packages/kit/src/tokens.ts`)
 
 | Export | What |
 | --- | --- |
@@ -13,14 +14,14 @@ stay in that campaign.
 | `INK` `MUTED` `FAINT` `RAIL` | type, secondary type (66%), tertiary (40%), hairlines (18%) |
 | `BRAND` | bunny orange `#FF784D` |
 | `ON_DARK` | all dark-stage roles, including `green` `blue` `yellow` `red` and `shadow` |
-| `LIGHT` `DARK` `shade()` `MAIN` | the full palette, six hues by eight steps (`kit/palette.ts`) |
+| `LIGHT` `DARK` `shade()` `MAIN` | the full palette, six hues by eight steps (`packages/kit/src/palette.ts`) |
 | `withAlpha(hex, a)` `inkA(a)` `brandA(a)` | translucency |
 | `RADIUS` | `xs` 3, `sm` 6, `md` 10 |
-| `PRODUCTS` `ProductName` | official product names (`kit/products.ts`); name products through this, never a typed-out string |
+| `PRODUCTS` `ProductName` | official product names (`packages/kit/src/products.ts`); name products through this, never a typed-out string |
 | `SHADOW` | the one card shadow |
-| `FONT` `MONO` | `"Rubik"`, `"'JetBrains Mono'"` (local files in `kit/fonts/`) |
+| `FONT` `MONO` | `"Rubik"`, `"'JetBrains Mono'"` (local files in `packages/kit/src/fonts/`) |
 
-## Motion (`kit/anim.ts`, `engine/motion.ts`)
+## Motion (`@keyframe/kit` for `anim.ts`, `@keyframe/engine/motion` for the rest)
 
 | Export | Use |
 | --- | --- |
@@ -32,11 +33,12 @@ stay in that campaign.
 | `fade(frame, at, dur)` | style object, opacity only |
 | `visible(frame, start, end, dur)` | 0..1 with a fade at both ends |
 | `interpolate(v, in[], out[], { easing, left, right })` | general mapping, clamps by default |
+| `interpolateColors(v, in[], colors[])` | colour fades (hex or rgba in, rgba out), clamped; alpha steps in bytes like a browser |
 | `Easing.inOut(Easing.cubic)`, `Easing.bezier(...)`, `Easing.out(...)` | curves |
 | `spring({ frame, fps, config, dur })` | the raw spring, closed form |
 | `lerp`, `clamp` | |
 
-## Engine (`engine/time.tsx`, `engine/assets.ts`)
+## Engine (`@keyframe/engine/time`, `@keyframe/engine/assets`)
 
 | Export | Use |
 | --- | --- |
@@ -48,24 +50,47 @@ stay in that campaign.
 | `<Img src={asset("x.svg")}>` | image that holds the frame until decoded |
 | `waitFor(promise)` | hold capture until something async is ready |
 
-## Components
+## Components (`@keyframe/components`)
 
 | Component | Notes |
 | --- | --- |
 | `<Stage eyebrow? logo? background? fadeIn=18 fadeOut=16>` | the navy stage; steps aside in alpha renders |
 | `<Bumper product? productLogo? logoPlacement? productLogoSize? theme?>` `bumper({ id, ...props })` | wordmark centre, product at the foot; `bumper()` returns a ready video with sound |
 | `<Super from to text top=70 size=56>` | the rise-and-unblur super in the top band |
-| `<BunnyLogo variant="light"/"dark" width>` `<ShieldMascot width/height>` | brand art from `public/` |
+| `<BunnyLogo variant="light"/"dark" width>` `<ShieldMascot width/height>` | brand art from `apps/videos/public/` |
 | `<Card cx cy w h accent label sub? at active?>` | steel card with accent bar, springs in at `at` |
 | `<Pill cx top>` | small orange label |
 | `<Chip cx cy accent ring?>` | legend/count chip with a dot or ring |
 | `<Check at color?>` `<CheckTile at>` `<CheckItem at delay>` | the drawn check, its tile, a checklist row |
 | `<ChartCard x y w h title>` `<ChartStat color label value tag?>` `<ChartTag tone>` `CHART` | dashboard charts |
-| `<CodeWalkthrough eyebrow title subtitle fileName code steps fontSize? lineHeight? panelTop? stepLen?>` `walkthroughDuration(steps, stepLen)` | guided code walkthrough: editor left, highlight glides block to block, commentary right. Tokens `k s f p t` from `@keyframe/kit/code`, coloured by `SYNTAX` |
+| `<CodeWalkthrough eyebrow title subtitle fileName code steps fontSize? lineHeight? panelTop? stepLen?>` `walkthroughDuration(steps, stepLen)` | guided code walkthrough: editor left, highlight glides block to block, commentary right. Tokens `k s f p t` from `@keyframe/components/code`, coloured by `SYNTAX` |
 | `<TitleBar title>` `TITLE_BAR_H` | the dotted title bar shared by editor and terminal panels |
 | `<Trace d progress color width?>` `<Dot d p color>` `pointOnPath(d, p)` `pathLength(d)` | SVG draw-ons and dots along paths |
+| `<Svg>` | full-frame SVG layer in stage pixels, for rails, arcs and marks under the HTML pieces |
+| `<Headline top size? style>` `<Hi color>` | bold centred caption; `Hi` colours a run inside it, usually the product in orange |
+| `<Label x y size? color?>` | plain centred label at a point |
+| `<EdgeNode cx cy at size? label?>` | the bunny.net edge: rabbit mark in an orange framed tile with a pill beneath |
+| `mapBox(x, cy, w)` `onMap(box, lat, lon)` `WORLD_MAP` | the world map art and a surveyed projection that puts a city on it |
 
-## Terminal (`kit/terminal.tsx`)
+## Illustrations (`@keyframe/illustrations`)
+
+Flat navy-and-white art in the house illustration style. Browse them all on the `Illustrations`
+sheet in the studio (`#Illustrations@0`). Colours inside the art files are the illustrator's, like the logos; colours
+in code around them still come from the palette.
+
+| Export | Use |
+| --- | --- |
+| `<Illustration name width style?>` | the art alone, at `width` px with its own aspect |
+| `<Device name width screenBackground? style?>{children}</Device>` | a device frame with `children` laid out in real px inside its screen, clipped to the glass (curved for the CRTs) |
+| `screenBox(name, width)` `illustrationHeight(name, width)` | the screen rectangle and the art height in px at a given width, for layout |
+| `ILLUSTRATIONS` `IllustrationName` `DeviceName` | the catalogue; `DeviceName` is the names with a screen |
+
+Devices: `browser` `code-window` `laptop` `monitor` `monitor-wide` `phone` `screen-hanging` `tv`
+`tv-crt` `tv-retro` `video-library` `video-player`. Art only: `laptop-angled` `tablet-angled`
+`screen-angled` (perspective screens, no live content), `checklist` `dashboard` `document`
+`profile-card`, and the scenes `backdrop-streaks` `desk-scene` `folder-scene`.
+
+## Terminal (`@keyframe/components`, `packages/components/src/terminal.tsx`)
 
 For CLI videos. A `Row` is `{ key, from, until?, lines?, group, render }`: it grows in at `from`,
 and if `until` is set it is redrawn away then (the way `prompts` and `ora` replace their line).

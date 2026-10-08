@@ -1,0 +1,14 @@
+{
+  "name": "@keyframe/kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "bunny.net brand foundations for Keyframe: palette, corners, fonts, stage tokens, motion helpers, product names and the house sound set",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./sfx": "./src/sfx.ts"
+  },
+  "dependencies": {
+    "@keyframe/engine": "1.0.0"
+  }
+}
