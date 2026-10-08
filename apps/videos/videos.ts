@@ -21,6 +21,11 @@ export const VIDEOS: Entry[] = [
   // ── CLI ──
   { id: "StreamImport", campaign: "CLI", load: () => import("./campaigns/cli/StreamImport") },
   { id: "SitesDeploy", campaign: "CLI", load: () => import("./campaigns/cli/SitesDeploy") },
+  {
+    id: "SitesDeployPlain",
+    campaign: "CLI",
+    load: () => import("./campaigns/cli/SitesDeploy").then((m) => ({ default: m.SitesDeployPlain })),
+  },
 
   // ── Burrow Smart Routing ──
   // Cut in between screen recordings; eyebrow and wordmark off unless --props asks.

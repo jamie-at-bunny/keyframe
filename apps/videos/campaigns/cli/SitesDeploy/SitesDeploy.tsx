@@ -21,7 +21,8 @@ import {
   SURFACE,
   withAlpha,
 } from "@keyframe/kit";
-import { CLOSE, FILES, SITE, SUPERS, T, uploadedAt, uploadedCount } from "./data";
+import { CLOSE, CLOSE_LINE, FILES, SITE, SUPERS, T, uploadedAt, uploadedCount } from "./data";
+import { CLI_IN, CliNode, cliOut, EdgeScene, Mosaic, PICKED_LANDS } from "./diagram";
 import { ROWS } from "./rows";
 
 // ── Camera ───────────────────────────────────────────────────────────────────
@@ -179,7 +180,7 @@ const LiveCard = () => {
 };
 
 // ── Close ────────────────────────────────────────────────────────────────────
-// The site is live, so the film closes on where it lives.
+// The film closes on what it is for: static sites, one command, bunny.net.
 
 const Close = () => {
   const frame = useFrame();
@@ -195,7 +196,7 @@ const Close = () => {
           ...enter(frame, CLOSE.line, 16),
         }}
       >
-        Live on
+        {CLOSE_LINE}
       </div>
       <div style={{ marginTop: 34, ...rise(pop(frame, CLOSE.logo)) }}>
         <BunnyLogo width={560} />
@@ -205,19 +206,28 @@ const Close = () => {
 };
 
 // ── Scene ────────────────────────────────────────────────────────────────────
-// `bunny sites deploy` in a linked Astro project: type the command, say yes to
-// the build, watch it build, upload and publish, then the close. The camera
-// works the lines in use; supers sit in the band above, where the terminal
-// fades out.
+// `bunny sites deploy` in a linked Astro project. The 30 starter frameworks
+// funnel into the CLI, which opens into the terminal: type the command, say yes
+// to the build, watch it build, upload and publish. The terminal folds back
+// into the CLI, which hands the site to the edge, Optimizer ticked when
+// `optimizer` is on, then the close. The camera works the lines in use; supers
+// sit in the band above, where the terminal fades out.
 const MASK = "linear-gradient(to bottom, transparent 150px, black 240px, black 1010px, transparent 1080px)";
 
-export const SitesDeploy = () => {
+// The terminal grows out of the CLI node and shrinks back into it: `z` runs
+// 0 (node-sized, on the node) to 1 (full size, on its camera). It scales about
+// the stage centre, which is about where the window's middle sits.
+const NODE_SCALE = 0.07;
+const MID = { x: STAGE.width / 2, y: STAGE.height / 2 };
+const fromNode = (node: { x: number; y: number }, z: number) =>
+  `translate(${(1 - z) * (node.x - MID.x)}px, ${(1 - z) * (node.y - MID.y)}px) scale(${NODE_SCALE + (1 - NODE_SCALE) * z})`;
+
+export const SitesDeploy = ({ optimizer = true }: { optimizer?: boolean }) => {
   const frame = useFrame();
   const cam = camera(frame);
 
-  const stageIn = progress(frame, 0, 18);
-  const panelIn = pop(frame, 4);
-  const out = progress(frame, T.outro, 18);
+  const open = progress(frame, T.term, 12);
+  const fold = progress(frame, T.handoff, 14);
   const fadeAll = progress(frame, T.end - 16, 16);
 
   const tx = AIM_X - (cam.fx + OX) * cam.scale;
@@ -225,24 +235,43 @@ export const SitesDeploy = () => {
 
   return (
     <Fill style={{ background: BG, opacity: 1 - fadeAll }}>
+      {frame < T.term + 8 && (
+        <>
+          <Mosaic />
+          <CliNode x={CLI_IN.x} y={CLI_IN.y} at={T.cli} litAt={PICKED_LANDS} out={1 - progress(frame, T.term, 8)} />
+        </>
+      )}
+
       {/* the terminal, under a soft mask so it fades out beneath the super band */}
-      <Fill style={{ opacity: stageIn * (1 - out), maskImage: MASK, WebkitMaskImage: MASK }}>
-        <div
+      {frame >= T.term && frame < T.handoff + 14 && (
+        <Fill
           style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            transformOrigin: "0 0",
-            transform: `translate(${tx}px, ${ty + (1 - panelIn) * 40 - out * 30}px) scale(${cam.scale})`,
+            opacity: fold > 0 ? 1 - fold : Math.min(1, open * 1.6),
+            maskImage: MASK,
+            WebkitMaskImage: MASK,
+            transformOrigin: `${MID.x}px ${MID.y}px`,
+            transform: fold > 0 ? fromNode(cliOut(optimizer), 1 - fold) : fromNode(CLI_IN, open),
           }}
         >
-          <Device name="code-window" width={WINDOW_W} screenBackground={ON_DARK.surface}>
-            <div style={{ marginTop: -TERM.bar }}>
-              <Terminal rows={ROWS} lit={litFor(frame)} bare />
-            </div>
-          </Device>
-        </div>
-      </Fill>
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              transformOrigin: "0 0",
+              transform: `translate(${tx}px, ${ty}px) scale(${cam.scale})`,
+            }}
+          >
+            <Device name="code-window" width={WINDOW_W} screenBackground={ON_DARK.surface}>
+              <div style={{ marginTop: -TERM.bar }}>
+                <Terminal rows={ROWS} lit={litFor(frame)} bare />
+              </div>
+            </Device>
+          </div>
+        </Fill>
+      )}
+
+      {frame >= T.handoff && frame < T.outro + 16 && <EdgeScene optimizer={optimizer} />}
 
       {SUPERS.map((sup) => (
         <Super key={sup.text} {...sup} />
